@@ -1,0 +1,62 @@
+{% load i18n %}
+<header>
+    <div class="container">
+        <nav>
+            <div class="box">
+                
+                <div class="name_cart">
+                    <img src="/media/images/z2.png" style="height: 40px;" alt="">
+                </div>
+            </div>
+            <div class="box">
+              <ul style="display: flex; align-items: center;">
+                  <li><a href="{% url 'mycart' %}">My Cart</a></li>
+                  
+                  {% if user.is_authenticated %}
+                    <li><a href="{% url 'order' %}">Order</a></li>
+  
+                    <li> <a style="font-size: 20px; color: black; display: flex;">{{user.username}}</a></li>
+                    <li> <a href="{% url 'logout' %}" style="text-decoration: none; color: black; font-size: 20px;">Logout</a></li>
+    
+                    {% else %}
+                    <li><a href="{% url 'login' %} " style="text-decoration: none; color: black; font-size: 20px;">Login</a></li>
+    
+                    {% endif %}
+
+                    <li>
+                      <form action="{% url 'set_language' %}" method="post">
+                          {% csrf_token %}
+                          <input type="hidden" name="next" value="{{ redirect_to }}">
+                          <select name="language" id="">
+                              {% get_current_language  as LANGUAGE_CODE %}
+                              {% get_available_languages  as LANGUAGE %}
+                              {% get_language_info_list  for LANGUAGE as languages %}
+
+                              {% for language in languages %}
+                                  <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                                      {{language.name_local}} ({{ language.code }})
+                                  </option>
+                              {% endfor %}
+
+                          </select>
+                          <input type="submit" value="Go">
+
+                      </form>
+                  </li>
+
+
+                </ul>
+            </div>
+        </nav>
+    </div>
+  </header>
+  
+  <div class="search">
+  
+    <form action="{% url 'home' %}" method="GET">
+      <input type="text" name="q" placeholder="Search">
+      <input type="submit" value="Поиск">
+    </form>
+  </div>
+  
+  

@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/info.css' %}">
+<div class="container">
+    <div class="info" style="border-radius: 30px";>
+        <div class="card_img">
+            <img src="{{ product.image.url }}" alt="">
+        </div>
+        <div class="descriptions">
+            <h1>{{ product.name }}</h1>
+            <p>{{ product.descriptions|truncatechars:70}}</p>
+            
+
+            <p>Price: <span>{{ product.price }}</span></p>
+            <p>Gender: <span>{{ product.gender }}</span></p>
+            <p>Size: <span>{{ product.size }}</span></p>
+
+            <form action="#" >
+                <label for="#"> Quant: </label>
+                <div class="number">
+                    <button class="number-minus" type="button" onclick="this.nextElementSibling.stepDown(); this.nextElementSibling.onchange();" style="height: 15%; padding: 5px 5px;" >-</button>
+                    <input type="number" min="1" max="20" value="1" readonly>
+                    <button class="number-plus" type="button" onclick="this.previousElementSibling.stepUp(); this.previousElementSibling.onchange();" style="height: 15%; padding: 5px 5px;  ">+</button>
+                </div>
+                <div class="btn_submit">
+
+                    <input type="submit" value="Add to cart " style="display: flex; margin-top:100px;">
+
+                    <a href="{{request.META.HTTP_REFERER}}"  style="display: flex; margin-top:100px;">Back</a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<section>
+
+    <div class="container" >
+      <h1>Рекомендации</h1>
+            <ul style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <!-- <a href="{% url 'home' %}" style="text-decoration: none; color: white; font-size: 1.2rem;">All</a> -->
+                {% for br in brand %}
+                <li style="list-style: none;">
+                    <a href="{% url 'home' %}?q={{br.name}}" style="text-decoration: none; color: white; font-size: 1.2rem;">{{ br.name }}</a>
+                </li>
+                {% endfor %}
+               
+            </ul>
+      <div class="row">
+        {% for pro in products %}
+
+        {% if pro.id != product.id %}
+        <div class="block">
+
+          <div class="image">
+            <img src="{{ pro.image.url }}" alt="" />
+            <div class="bg_color">
+              <div class="center_text">
+                <a href="#">Add to cart</a>
+                <a href="{% url 'info' pro.id %}">Viwe</a>
+              </div>
+            </div>
+            <div class="text">
+              <h3>{{ pro.name}}</h3>
+              <p>Price:{{pro.price}}</p>
+            </div>
+          </div>
+          <div class="discount">
+            <span>скидка -70%</span>
+          </div>
+        
+        </div>
+        {% endif %}
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+<div class="container">
+    <div class="comment" >
+        <div class="form">
+            <h2>Comment</h2>
+
+            <form action="{% url 'addcomment' product.id %}" method="POST">
+                {% csrf_token %}
+
+                {% if messages %}
+                <p>{{messages}}</p>
+                {% endif %}
+
+            <div class="input">
+                <label for="" >Username</label>
+                <input type="text" name="username" placeholder="Username" required style="border-radius: 7px">
+            </div>
+            <div class="input">
+                <label for="">Comment</label>
+                <textarea name="descriptions" id=""  placeholder="Descriptions" required style="border-radius: 7px"></textarea>
+            </div>
+            <div class="btn_submit">
+                <input type="submit" value="Add to cart" >
+            </div>
+        </form>
+        </div>
+        
+        <div class="text">
+            <div class="row">
+                <h1>Comment</h1>
+                {% for i in comment %}
+                <div class="text_comment">
+                    <p class="b-color">@{{i.username}}</p>
+                    <p class="b-text">{{i.comment}}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+{% endblock content %}

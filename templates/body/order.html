@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section>
+    <div class="container">
+      <h1>Order</h1>
+      <div class="row">
+        {% for product in products %}
+        <div class="block">
+
+          <div class="image">
+            <img src="{{ product.products.image.url }}" alt="" />
+            <div class="bg_color">
+              <div class="center_text">
+                    <form action="{% url 'update' product.id %}" method="GET">
+                        {% csrf_token %}
+                        <input type="number" style="width:40px;" min="0" max="{{product.products.quant}}" name="quant" value="{{product.quant}}">
+                        <input type="submit" value="sumbit">
+                    </form>
+
+                <a href="{% url 'info' product.id %}">Viwe</a>
+              </div>
+            </div>
+            <div class="text">
+              <h3>{{ product.products.name}}</h3>
+              <p>Price:{{product.price}}</p>
+            </div>
+          </div>
+          <div class="discount">
+            <span>скидка -70%</span>
+          </div>
+        
+        </div>
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section>
+    <div class="container">
+      <h1>POPULAR</h1>
+        <div class="brand">
+            <ul style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: white; font-size: 1.2rem;">All</a>
+                {% for br in brand %}
+                <li style="list-style: none;">
+                    <a href="{% url 'home' %}?q={{br.name}}" style="text-decoration: none; background-color: rgb(86, 119, 185); font-size: 1.2rem;">{{ br.name }}</a>
+                </li>
+                {% endfor %}
+               
+            </ul>
+        </div>
+      <div class="row">
+        {% for product in products %}
+        {% if product.quant != 0 %}
+        <div class="block">
+
+          <div class="image">
+            <img src="{{ product.image.url }}" alt="" />
+            <div class="bg_color">
+              <div class="center_text">
+                <a href="{% url 'addtocart' product.id %}">Add to cart</a>
+                <a href="{% url 'info' product.id %}">Viwe</a>
+              </div>
+            </div>
+            <div class="text">
+              <h3>{{ product.name}}</h3>
+              <p>Price:{{product.price}}</p>
+            </div>
+          </div>
+          <div class="discount">
+            <span>скидка -70%</span>
+          </div>
+        
+        </div>
+        {% endif %}
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
